@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Pergola — Pizzeria Italienne Halal | Montréal</title>
+  <meta name="description" content="La Pergola, pizzeria italienne halal à Montréal. Pizzas fraîches préparées par notre pizzaiolo confirmé. 3257 Rue Masson, Montréal.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #B91C1C;
+      --primary-light: #DC2626;
+      --primary-dark: #7F1D1D;
+      --accent: #A16207;
+      --accent-light: #CA8A04;
+      --cream: #FEF7ED;
+      --cream-dark: #FDF2E9;
+      --warm-white: #FFFBF5;
+      --text-dark: #1C1917;
+      --text-muted: #78716C;
+      --text-light: #A8A29E;
+      --border: #E7E5E4;
+      --card-bg: #FFFFFF;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'Inter', -apple-system, sans-serif;
+      --radius: 16px;
+      --radius-sm: 8px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--text-dark);
+      background: var(--warm-white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,251,245,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(231,229,228,0.5);
+      transition: var(--transition);
+    }
+    .nav.scrolled { box-shadow: var(--shadow-sm); }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      padding: 0 24px; height: 72px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem; font-weight: 700;
+      color: var(--primary); text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 32px; align-items: center; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--text-muted);
+      font-size: 0.9rem; font-weight: 500;
+      transition: var(--transition);
+    }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-cta {
+      background: var(--primary); color: #fff !important;
+      padding: 10px 24px; border-radius: 50px;
+      font-weight: 600 !important; font-size: 0.85rem !important;
+    }
+    .nav-cta:hover { background: var(--primary-dark); color: #fff; }
+    .lang-switch {
+      background: none; border: 1px solid var(--border);
+      padding: 6px 14px; border-radius: 50px; cursor: pointer;
+      font-size: 0.8rem; font-weight: 600; color: var(--text-muted);
+      transition: var(--transition); font-family: var(--font-sans);
+    }
+    .lang-switch:hover { border-color: var(--primary); color: var(--primary); }
+    .hamburger {
+      display: none; background: none; border: none; cursor: pointer;
+      flex-direction: column; gap: 5px; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--text-dark); transition: var(--transition);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, var(--primary-dark) 0%, #451a03 100%);
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1600&q=80') center/cover;
+      opacity: 0.3; mix-blend-mode: luminosity;
+    }
+    .hero-gradient {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(127,29,29,0.6), rgba(69,26,3,0.9));
+    }
+    .hero-content {
+      position: relative; z-index: 2; max-width: 1200px;
+      margin: 0 auto; padding: 120px 24px 80px; text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.12); backdrop-filter: blur(10px);
+      padding: 8px 20px; border-radius: 50px; margin-bottom: 32px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .hero-badge span {
+      color: rgba(255,255,255,0.9); font-size: 0.85rem;
+      font-weight: 500; letter-spacing: 0.05em;
+    }
+    .hero h1 {
+      font-family: var(--font-serif); font-size: clamp(3rem, 7vw, 5.5rem);
+      color: #fff; line-height: 1.1; margin-bottom: 24px;
+      font-weight: 700;
+    }
+    .hero h1 em {
+      font-style: italic; color: var(--accent-light);
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.25rem); color: rgba(255,255,255,0.8);
+      max-width: 600px; margin: 0 auto 40px; line-height: 1.7;
+    }
+    .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      padding: 16px 36px; border-radius: 50px; font-weight: 600;
+      font-size: 1rem; text-decoration: none; transition: var(--transition);
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-sans); border: none; cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--primary); color: #fff;
+      box-shadow: 0 4px 20px rgba(185,28,28,0.4);
+    }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent; color: #fff;
+      border: 2px solid rgba(255,255,255,0.4);
+    }
+    .btn-outline:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+    .hero-scroll {
+      position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.5); animation: bounce 2s infinite;
+      font-size: 0.8rem; text-align: center;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(10px); }
+    }
+
+    /* SECTIONS */
+    section { padding: 100px 24px; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.2; margin-bottom: 16px; color: var(--text-dark);
+    }
+    .section-desc {
+      font-size: 1.1rem; color: var(--text-muted);
+      max-width: 560px; line-height: 1.7;
+    }
+
+    /* ABOUT */
+    .about { background: var(--cream); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .about-image {
+      aspect-ratio: 4/5; border-radius: var(--radius);
+      overflow: hidden; position: relative;
+    }
+    .about-image img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .about-image::after {
+      content: ''; position: absolute; inset: 0;
+      border: 2px solid rgba(185,28,28,0.1); border-radius: var(--radius);
+    }
+    .about-stats {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 24px; margin-top: 40px;
+    }
+    .stat {
+      background: var(--card-bg); padding: 24px;
+      border-radius: var(--radius-sm); box-shadow: var(--shadow-sm);
+    }
+    .stat-number {
+      font-family: var(--font-serif); font-size: 2rem;
+      font-weight: 700; color: var(--primary);
+    }
+    .stat-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+
+    /* MENU */
+    .menu-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px; margin-top: 60px;
+    }
+    .menu-card {
+      background: var(--card-bg); border-radius: var(--radius);
+      overflow: hidden; box-shadow: var(--shadow-sm);
+      transition: var(--transition); border: 1px solid var(--border);
+    }
+    .menu-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+    .menu-card-img {
+      aspect-ratio: 16/10; overflow: hidden;
+    }
+    .menu-card-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .menu-card:hover .menu-card-img img { transform: scale(1.05); }
+    .menu-card-body { padding: 28px; }
+    .menu-card-title {
+      font-family: var(--font-serif); font-size: 1.4rem;
+      font-weight: 600; margin-bottom: 8px;
+    }
+    .menu-card-desc { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
+    .menu-card-tag {
+      display: inline-block; margin-top: 16px;
+      background: var(--cream); color: var(--accent);
+      padding: 4px 12px; border-radius: 50px;
+      font-size: 0.75rem; font-weight: 600;
+    }
+
+    /* HALAL BADGE SECTION */
+    .halal-banner {
+      background: linear-gradient(135deg, #065F46, #047857);
+      text-align: center; padding: 60px 24px;
+    }
+    .halal-banner h3 {
+      font-family: var(--font-serif); font-size: 2rem;
+      color: #fff; margin-bottom: 12px;
+    }
+    .halal-banner p { color: rgba(255,255,255,0.85); font-size: 1.1rem; }
+    .halal-icon {
+      font-size: 3rem; margin-bottom: 16px;
+    }
+
+    /* GALLERY */
+    .gallery { background: var(--cream); }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 16px; margin-top: 60px;
+    }
+    .gallery-item {
+      border-radius: var(--radius); overflow: hidden;
+      aspect-ratio: 1; position: relative; cursor: pointer;
+    }
+    .gallery-item:first-child {
+      grid-column: span 2; grid-row: span 2; aspect-ratio: auto;
+    }
+    .gallery-item img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.05); }
+    .gallery-item::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+      opacity: 0; transition: var(--transition);
+    }
+    .gallery-item:hover::after { opacity: 1; }
+
+    /* HOURS + CONTACT */
+    .contact { background: var(--warm-white); }
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; margin-top: 60px;
+    }
+    .hours-card {
+      background: var(--card-bg); border-radius: var(--radius);
+      padding: 40px; box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+    }
+    .hours-card h3 {
+      font-family: var(--font-serif); font-size: 1.5rem;
+      margin-bottom: 24px; color: var(--text-dark);
+    }
+    .hours-row {
+      display: flex; justify-content: space-between;
+      padding: 12px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+    .hours-row:last-child { border-bottom: none; }
+    .hours-day { font-weight: 500; }
+    .hours-time { color: var(--text-muted); }
+    .hours-closed { color: var(--primary); font-weight: 600; }
+
+    .info-card {
+      background: var(--card-bg); border-radius: var(--radius);
+      padding: 40px; box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+    }
+    .info-card h3 {
+      font-family: var(--font-serif); font-size: 1.5rem;
+      margin-bottom: 24px; color: var(--text-dark);
+    }
+    .info-item {
+      display: flex; gap: 16px; padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .info-item:last-child { border-bottom: none; }
+    .info-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--cream); display: flex;
+      align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .info-text h4 { font-size: 0.85rem; font-weight: 600; margin-bottom: 2px; }
+    .info-text p { font-size: 0.9rem; color: var(--text-muted); }
+    .info-text a { color: var(--primary); text-decoration: none; }
+    .info-text a:hover { text-decoration: underline; }
+
+    /* MAP */
+    .map-section { padding: 0; }
+    .map-container {
+      width: 100%; height: 400px; position: relative;
+    }
+    .map-container iframe { width: 100%; height: 100%; border: none; }
+
+    /* FOOTER */
+    footer {
+      background: var(--text-dark); color: rgba(255,255,255,0.7);
+      padding: 60px 24px 30px;
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 24px;
+    }
+    .footer-logo {
+      font-family: var(--font-serif); font-size: 1.4rem;
+      color: #fff; font-weight: 700;
+    }
+    .footer-logo span { color: var(--accent-light); }
+    .footer-links { display: flex; gap: 24px; list-style: none; }
+    .footer-links a {
+      color: rgba(255,255,255,0.6); text-decoration: none;
+      font-size: 0.9rem; transition: var(--transition);
+    }
+    .footer-links a:hover { color: #fff; }
+    .footer-copy {
+      text-align: center; margin-top: 40px;
+      padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.8rem; color: rgba(255,255,255,0.4);
+      max-width: 1200px; margin-left: auto; margin-right: auto;
+    }
+
+    /* MOBILE NAV */
+    .mobile-menu {
+      display: none; position: fixed; inset: 0; z-index: 99;
+      background: rgba(255,251,245,0.98); backdrop-filter: blur(20px);
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 32px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--font-serif); font-size: 1.8rem;
+      color: var(--text-dark); text-decoration: none;
+      transition: var(--transition);
+    }
+    .mobile-menu a:hover { color: var(--primary); }
+    .mobile-close {
+      position: absolute; top: 24px; right: 24px;
+      background: none; border: none; font-size: 2rem;
+      cursor: pointer; color: var(--text-dark);
+    }
+
+    /* ANIMATIONS */
+    .fade-up {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-item:first-child { grid-column: span 2; }
+      .menu-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2.5rem; }
+      .footer-inner { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVIGATION -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">La <span>Pergola</span></a>
+      <ul class="nav-links">
+        <li><a href="#about" data-fr="À propos" data-en="About">À propos</a></li>
+        <li><a href="#menu" data-fr="Menu" data-en="Menu">Menu</a></li>
+        <li><a href="#gallery" data-fr="Galerie" data-en="Gallery">Galerie</a></li>
+        <li><a href="#contact" data-fr="Contact" data-en="Contact">Contact</a></li>
+        <li><button class="lang-switch" onclick="toggleLang()">EN</button></li>
+        <li><a href="tel:+15141234567" class="nav-cta" data-fr="Commander" data-en="Order Now">Commander</a></li>
+      </ul>
+      <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-close" onclick="toggleMenu()">&times;</button>
+    <a href="#about" onclick="toggleMenu()" data-fr="À propos" data-en="About">À propos</a>
+    <a href="#menu" onclick="toggleMenu()" data-fr="Menu" data-en="Menu">Menu</a>
+    <a href="#gallery" onclick="toggleMenu()" data-fr="Galerie" data-en="Gallery">Galerie</a>
+    <a href="#contact" onclick="toggleMenu()" data-fr="Contact" data-en="Contact">Contact</a>
+    <button class="lang-switch" onclick="toggleLang(); toggleMenu();">EN</button>
+    <a href="tel:+15141234567" class="btn btn-primary" data-fr="Commander" data-en="Order Now">Commander</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-gradient"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span>&#9790;</span>
+        <span data-fr="Certifié Halal" data-en="Halal Certified">Certifié Halal</span>
+      </div>
+      <h1 data-fr="L'Italie au cœur de <em>Montréal</em>" data-en="Italy in the heart of <em>Montréal</em>">L'Italie au cœur de <em>Montréal</em></h1>
+      <p class="hero-sub" data-fr="Des pizzas fraîchement préparées par notre pizzaiolo confirmé. Chaque bouchée, une explosion de saveurs authentiques." data-en="Freshly crafted pizzas by our expert pizzaiolo. Every bite, an explosion of authentic flavors.">Des pizzas fraîchement préparées par notre pizzaiolo confirmé. Chaque bouchée, une explosion de saveurs authentiques.</p>
+      <div class="hero-buttons">
+        <a href="#menu" class="btn btn-primary" data-fr="Découvrir le menu" data-en="Explore the menu">Découvrir le menu</a>
+        <a href="#contact" class="btn btn-outline" data-fr="Nous trouver" data-en="Find us">Nous trouver</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span data-fr="Défiler vers le bas" data-en="Scroll down">Défiler vers le bas</span><br>&#8595;
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image fade-up">
+          <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&q=80" alt="Pizza artisanale La Pergola" loading="lazy">
+        </div>
+        <div class="fade-up">
+          <p class="section-label" data-fr="Notre histoire" data-en="Our story">Notre histoire</p>
+          <h2 class="section-title" data-fr="Bien plus qu'un restaurant, une <em>célébration</em>" data-en="More than a restaurant, a <em>celebration</em>">Bien plus qu'un restaurant, une <em>célébration</em></h2>
+          <p class="section-desc" data-fr="La Pergola vous invite à un voyage culinaire en Italie sans quitter Montréal. Que ce soit pour une soirée en amoureux ou un repas en famille, notre restaurant vous offre une expérience gastronomique inoubliable. Découvrez pourquoi La Pergola est une célébration de la cuisine italienne authentique." data-en="La Pergola invites you on a culinary journey to Italy without leaving Montréal. Whether for a romantic evening or a family meal, our restaurant offers an unforgettable gastronomic experience. Discover why La Pergola is a celebration of authentic Italian cuisine.">La Pergola vous invite à un voyage culinaire en Italie sans quitter Montréal. Que ce soit pour une soirée en amoureux ou un repas en famille, notre restaurant vous offre une expérience gastronomique inoubliable. Découvrez pourquoi La Pergola est une célébration de la cuisine italienne authentique.</p>
+          <div class="about-stats">
+            <div class="stat">
+              <div class="stat-number" data-fr="100%" data-en="100%">100%</div>
+              <div class="stat-label" data-fr="Halal certifié" data-en="Halal certified">Halal certifié</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number" data-fr="Frais" data-en="Fresh">Frais</div>
+              <div class="stat-label" data-fr="Ingrédients du jour" data-en="Daily fresh ingredients">Ingrédients du jour</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number" data-fr="Artisan" data-en="Artisan">Artisan</div>
+              <div class="stat-label" data-fr="Pizzaiolo confirmé" data-en="Expert pizzaiolo">Pizzaiolo confirmé</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number" data-fr="Famille" data-en="Family">Famille</div>
+              <div class="stat-label" data-fr="Ambiance chaleureuse" data-en="Warm atmosphere">Ambiance chaleureuse</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HALAL BANNER -->
+  <section class="halal-banner">
+    <div class="halal-icon">&#9790;</div>
+    <h3 data-fr="Pizzeria 100% Halal" data-en="100% Halal Pizzeria">Pizzeria 100% Halal</h3>
+    <p data-fr="Tous nos ingrédients sont certifiés halal. Savourez en toute confiance." data-en="All our ingredients are halal certified. Enjoy with confidence.">Tous nos ingrédients sont certifiés halal. Savourez en toute confiance.</p>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu">
+    <div class="container">
+      <div class="fade-up" style="text-align:center; margin-bottom:20px;">
+        <p class="section-label" data-fr="Nos spécialités" data-en="Our specialties">Nos spécialités</p>
+        <h2 class="section-title" style="margin:0 auto;" data-fr="Des pizzas qui racontent <em>l'Italie</em>" data-en="Pizzas that tell the story of <em>Italy</em>">Des pizzas qui racontent <em>l'Italie</em></h2>
+      </div>
+      <div class="menu-grid">
+        <div class="menu-card fade-up">
+          <div class="menu-card-img">
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80" alt="Pizza Margherita" loading="lazy">
+          </div>
+          <div class="menu-card-body">
+            <h3 class="menu-card-title">Margherita</h3>
+            <p class="menu-card-desc" data-fr="La classique italienne : sauce tomate San Marzano, mozzarella fior di latte, basilic frais et huile d'olive extra vierge." data-en="The Italian classic: San Marzano tomato sauce, fior di latte mozzarella, fresh basil and extra virgin olive oil.">La classique italienne : sauce tomate San Marzano, mozzarella fior di latte, basilic frais et huile d'olive extra vierge.</p>
+            <span class="menu-card-tag" data-fr="Classique" data-en="Classic">Classique</span>
+          </div>
+        </div>
+        <div class="menu-card fade-up">
+          <div class="menu-card-img">
+            <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?w=600&q=80" alt="Pizza Pepperoni" loading="lazy">
+          </div>
+          <div class="menu-card-body">
+            <h3 class="menu-card-title">Pepperoni</h3>
+            <p class="menu-card-desc" data-fr="Pepperoni halal croustillant, mozzarella fondante et sauce tomate maison. Un incontournable de notre carte." data-en="Crispy halal pepperoni, melting mozzarella and homemade tomato sauce. A must-have from our menu.">Pepperoni halal croustillant, mozzarella fondante et sauce tomate maison. Un incontournable de notre carte.</p>
+            <span class="menu-card-tag">Halal</span>
+          </div>
+        </div>
+        <div class="menu-card fade-up">
+          <div class="menu-card-img">
+            <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=600&q=80" alt="Pizza Végétarienne" loading="lazy">
+          </div>
+          <div class="menu-card-body">
+            <h3 class="menu-card-title" data-fr="Végétarienne" data-en="Vegetarian">Végétarienne</h3>
+            <p class="menu-card-desc" data-fr="Poivrons grillés, champignons, olives noires, oignons rouges et fromage de chèvre sur lit de sauce tomate." data-en="Grilled peppers, mushrooms, black olives, red onions and goat cheese on a tomato sauce bed.">Poivrons grillés, champignons, olives noires, oignons rouges et fromage de chèvre sur lit de sauce tomate.</p>
+            <span class="menu-card-tag" data-fr="Végé" data-en="Veggie">Végé</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery" id="gallery">
+    <div class="container">
+      <div class="fade-up" style="text-align:center;">
+        <p class="section-label" data-fr="Galerie photos" data-en="Photo gallery">Galerie photos</p>
+        <h2 class="section-title" style="margin:0 auto;" data-fr="Un aperçu de <em>l'expérience</em>" data-en="A glimpse of the <em>experience</em>">Un aperçu de <em>l'expérience</em></h2>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item fade-up">
+          <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80" alt="Intérieur du restaurant La Pergola" loading="lazy">
+        </div>
+        <div class="gallery-item fade-up">
+          <img src="https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=500&q=80" alt="Pizza au four" loading="lazy">
+        </div>
+        <div class="gallery-item fade-up">
+          <img src="https://images.unsplash.com/photo-1595295333158-4742f28fbd85?w=500&q=80" alt="Préparation de la pizza" loading="lazy">
+        </div>
+        <div class="gallery-item fade-up">
+          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=500&q=80" alt="Ambiance La Pergola" loading="lazy">
+        </div>
+        <div class="gallery-item fade-up">
+          <img src="https://images.unsplash.com/photo-1588315029754-2dd089d39a1a?w=500&q=80" alt="Ingrédients frais" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT & HOURS -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="fade-up" style="text-align:center; margin-bottom:20px;">
+        <p class="section-label" data-fr="Venez nous voir" data-en="Come visit us">Venez nous voir</p>
+        <h2 class="section-title" style="margin:0 auto;" data-fr="Horaires & <em>Coordonnées</em>" data-en="Hours & <em>Location</em>">Horaires & <em>Coordonnées</em></h2>
+      </div>
+      <div class="contact-grid">
+        <div class="hours-card fade-up">
+          <h3 data-fr="Heures d'ouverture" data-en="Opening Hours">Heures d'ouverture</h3>
+          <div class="hours-row">
+            <span class="hours-day" data-fr="Lundi" data-en="Monday">Lundi</span>
+            <span class="hours-time hours-closed" data-fr="Fermé" data-en="Closed">Fermé</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day" data-fr="Mardi" data-en="Tuesday">Mardi</span>
+            <span class="hours-time">16h00 – 1h00</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day" data-fr="Mercredi" data-en="Wednesday">Mercredi</span>
+            <span class="hours-time">16h00 – 1h00</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day" data-fr="Jeudi" data-en="Thursday">Jeudi</span>
+            <span class="hours-time">16h00 – 1h00</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day" data-fr="Vendredi" data-en="Friday">Vendredi</span>
+            <span class="hours-time">16h00 – 1h00</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day" data-fr="Samedi" data-en="Saturday">Samedi</span>
+            <span class="hours-time">16h00 – 1h00</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day" data-fr="Dimanche" data-en="Sunday">Dimanche</span>
+            <span class="hours-time">16h00 – 1h00</span>
+          </div>
+        </div>
+        <div class="info-card fade-up">
+          <h3 data-fr="Informations" data-en="Information">Informations</h3>
+          <div class="info-item">
+            <div class="info-icon">&#128205;</div>
+            <div class="info-text">
+              <h4 data-fr="Adresse" data-en="Address">Adresse</h4>
+              <p>3257 Rue Masson<br>Montréal, QC H1X 1R3</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">&#128222;</div>
+            <div class="info-text">
+              <h4 data-fr="Téléphone" data-en="Phone">Téléphone</h4>
+              <p><a href="tel:+15141234567">(514) 123-4567</a></p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">&#127860;</div>
+            <div class="info-text">
+              <h4 data-fr="Type de cuisine" data-en="Cuisine type">Type de cuisine</h4>
+              <p data-fr="Pizzeria italienne • Halal" data-en="Italian pizzeria • Halal">Pizzeria italienne • Halal</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">&#128663;</div>
+            <div class="info-text">
+              <h4 data-fr="Services" data-en="Services">Services</h4>
+              <p data-fr="Sur place • Livraison • À emporter" data-en="Dine-in • Delivery • Takeout">Sur place • Livraison • À emporter</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAP -->
+  <div class="map-section">
+    <div class="map-container">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2795.3!2d-73.5687!3d45.5486!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDXCsDMyJzU1LjAiTiA3M8KwMzQnMDcuMyJX!5e0!3m2!1sfr!2sca!4v1" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="La Pergola - Google Maps"></iframe>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">La <span>Pergola</span></div>
+      <ul class="footer-links">
+        <li><a href="#about" data-fr="À propos" data-en="About">À propos</a></li>
+        <li><a href="#menu" data-fr="Menu" data-en="Menu">Menu</a></li>
+        <li><a href="#gallery" data-fr="Galerie" data-en="Gallery">Galerie</a></li>
+        <li><a href="#contact" data-fr="Contact" data-en="Contact">Contact</a></li>
+      </ul>
+    </div>
+    <p class="footer-copy">&copy; 2026 La Pergola — <span data-fr="Pizzeria Italienne Halal à Montréal" data-en="Halal Italian Pizzeria in Montréal">Pizzeria Italienne Halal à Montréal</span></p>
+  </footer>
+
+  <script>
+    // Language toggle
+    let currentLang = 'fr';
+    function toggleLang() {
+      currentLang = currentLang === 'fr' ? 'en' : 'fr';
+      document.documentElement.lang = currentLang;
+      document.querySelectorAll('[data-fr]').forEach(el => {
+        const text = el.getAttribute(`data-${currentLang}`);
+        if (text) el.innerHTML = text;
+      });
+      document.querySelectorAll('.lang-switch').forEach(btn => {
+        btn.textContent = currentLang === 'fr' ? 'EN' : 'FR';
+      });
+      document.title = currentLang === 'fr'
+        ? 'La Pergola — Pizzeria Italienne Halal | Montréal'
+        : 'La Pergola — Halal Italian Pizzeria | Montréal';
+    }
+
+    // Mobile menu
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+      document.body.style.overflow = document.getElementById('mobileMenu').classList.contains('open') ? 'hidden' : '';
+    }
+
+    // Navbar scroll
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
