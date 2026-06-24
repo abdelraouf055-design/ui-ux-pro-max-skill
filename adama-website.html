@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADAMA Canada - Arts Martiaux Adaptés</title>
+  <meta name="description" content="ADAMA favorise l'intégration des personnes autistes et à besoins spécifiques par les arts martiaux adaptés.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1E293B;
+      --primary-light: #334155;
+      --accent: #DC2626;
+      --accent-hover: #B91C1C;
+      --gold: #D4A017;
+      --bg-dark: #0B0F1A;
+      --bg-card: rgba(30, 41, 59, 0.6);
+      --bg-glass: rgba(255, 255, 255, 0.05);
+      --border-glass: rgba(255, 255, 255, 0.1);
+      --text-primary: #F1F5F9;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+      --font-display: 'Barlow Condensed', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+      --transition: 250ms ease-out;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* NAV */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(11, 15, 26, 0.8);
+      border-bottom: 1px solid var(--border-glass);
+      transition: background var(--transition);
+    }
+    .nav.scrolled { background: rgba(11, 15, 26, 0.95); }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-decoration: none;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 0.25rem;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: color var(--transition), background var(--transition);
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--text-primary);
+      background: var(--bg-glass);
+    }
+
+    .nav-lang {
+      display: flex;
+      gap: 0.25rem;
+      margin-left: 1rem;
+      padding-left: 1rem;
+      border-left: 1px solid var(--border-glass);
+    }
+    .nav-lang a {
+      color: var(--text-muted) !important;
+      font-weight: 600 !important;
+      font-size: 0.85rem !important;
+      padding: 0.25rem 0.5rem !important;
+      border-radius: 4px !important;
+      background: none !important;
+    }
+    .nav-lang a:hover, .nav-lang a.active { color: var(--accent) !important; }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0.5rem;
+    }
+    .nav-toggle span {
+      width: 24px; height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+      transition: transform var(--transition), opacity var(--transition);
+    }
+
+    /* PAGES */
+    .page { display: none; position: relative; z-index: 1; }
+    .page.active { display: block; }
+
+    section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-top: 5rem;
+      max-width: 100%;
+    }
+    .hero-short { min-height: 60vh; }
+    .hero-xs { min-height: 50vh; }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border-glass);
+      border-radius: 50px;
+      font-size: 0.85rem;
+      color: var(--gold);
+      background: var(--bg-glass);
+      backdrop-filter: blur(10px);
+      margin-bottom: 2rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 .accent { color: var(--accent); }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.875rem 2rem;
+      border-radius: 12px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(220, 38, 38, 0.3);
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 8px 30px rgba(220, 38, 38, 0.4);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(10px);
+    }
+    .btn-outline:hover {
+      background: var(--bg-glass);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* GLASS CARDS */
+    .glass-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      padding: 2rem;
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+    }
+    .glass-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    /* SECTION HEADERS */
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-tag {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 1rem;
+    }
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .section-header p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* GRIDS */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+
+    /* ICON */
+    .icon-circle {
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      background: rgba(220, 38, 38, 0.1);
+      border: 1px solid rgba(220, 38, 38, 0.2);
+    }
+    .icon-circle svg { width: 24px; height: 24px; color: var(--accent); }
+
+    .glass-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.75rem;
+    }
+    .glass-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* STATS */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* PROGRAM CARDS */
+    .program-image {
+      width: 100%; height: 200px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .program-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.15), transparent);
+    }
+    .program-image svg {
+      width: 64px; height: 64px;
+      color: rgba(255, 255, 255, 0.3);
+      z-index: 1;
+    }
+    .program-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--gold);
+      background: rgba(212, 160, 23, 0.1);
+      border: 1px solid rgba(212, 160, 23, 0.2);
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* TEAM */
+    .team-card { text-align: center; }
+    .team-avatar {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      margin: 0 auto 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--border-glass);
+    }
+    .team-avatar svg { width: 40px; height: 40px; color: rgba(255, 255, 255, 0.6); }
+    .team-card h3 { font-size: 1.1rem; text-transform: none; letter-spacing: 0; }
+    .team-role { font-size: 0.85rem; color: var(--accent); font-weight: 500; }
+
+    /* TIMELINE */
+    .timeline { position: relative; padding-left: 3rem; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent), var(--primary-light), transparent);
+    }
+    .timeline-item { position: relative; margin-bottom: 3rem; }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -3rem; top: 0.5rem;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid var(--bg-dark);
+      transform: translateX(-5px);
+    }
+    .timeline-year {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      color: var(--accent);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .timeline-item h3 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .timeline-item p { color: var(--text-secondary); font-size: 0.95rem; }
+
+    /* VALUES */
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .value-item { display: flex; gap: 1rem; align-items: flex-start; }
+    .value-icon {
+      width: 40px; height: 40px; min-width: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(220, 38, 38, 0.1);
+      border: 1px solid rgba(220, 38, 38, 0.15);
+    }
+    .value-icon svg { width: 20px; height: 20px; color: var(--accent); }
+    .value-item h4 { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .value-item p { font-size: 0.9rem; color: var(--text-secondary); }
+
+    /* CONTACT */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .contact-info-item { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 2rem; }
+    .contact-info-item .icon-circle { flex-shrink: 0; margin-bottom: 0; }
+    .contact-info-item h3 { font-size: 1rem; margin-bottom: 0.25rem; text-transform: none; letter-spacing: 0; }
+    .contact-info-item p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+    }
+    .form-group textarea { min-height: 120px; resize: vertical; }
+    .form-group select option { background: var(--bg-dark); color: var(--text-primary); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* PARTNERS */
+    .partners-grid { display: flex; justify-content: center; align-items: center; gap: 3rem; flex-wrap: wrap; }
+    .partner-logo {
+      padding: 1.5rem 2.5rem;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      border-radius: 12px;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: border-color var(--transition), color var(--transition);
+    }
+    .partner-logo:hover { border-color: rgba(255, 255, 255, 0.15); color: var(--text-secondary); }
+
+    /* CTA */
+    .cta-section { text-align: center; padding: 6rem 2rem; }
+    .cta-box {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 4rem 3rem;
+      background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(30, 41, 59, 0.6));
+      border: 1px solid rgba(220, 38, 38, 0.2);
+      border-radius: 24px;
+      backdrop-filter: blur(16px);
+    }
+    .cta-box h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+    }
+    .cta-box p { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 2rem; }
+
+    /* FOOTER */
+    .site-footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border-glass);
+      background: rgba(11, 15, 26, 0.9);
+      backdrop-filter: blur(20px);
+      padding: 3rem 2rem;
+    }
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+    }
+    .footer-brand p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 1rem; max-width: 300px; }
+    .site-footer h4 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1.25rem;
+      color: var(--text-primary);
+    }
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 0.5rem; }
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: color var(--transition);
+    }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 2rem auto 0;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-glass);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* REVEAL ANIMATION */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* LIST STYLE */
+    .feature-list { color: var(--text-secondary); margin-top: 1rem; padding-left: 1.25rem; font-size: 0.95rem; }
+    .feature-list li { margin-bottom: 0.35rem; }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .grid-3 { grid-template-columns: repeat(2, 1fr); }
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .footer-content { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%; left: 0; right: 0;
+        flex-direction: column;
+        background: rgba(11, 15, 26, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 1rem;
+        border-bottom: 1px solid var(--border-glass);
+      }
+      .nav-links.open { display: flex; }
+      .nav-lang {
+        border-left: none;
+        margin-left: 0;
+        padding-left: 0;
+        border-top: 1px solid var(--border-glass);
+        padding-top: 0.75rem;
+        margin-top: 0.5rem;
+      }
+      .nav-toggle { display: flex; }
+      section { padding: 4rem 1.25rem; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-content { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .values-grid { grid-template-columns: 1fr; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .partners-grid { gap: 1rem; }
+      .partner-logo { padding: 1rem 1.5rem; font-size: 0.85rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+      #bg-canvas { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <!-- NAVIGATION -->
+  <nav class="nav" role="navigation" aria-label="Navigation principale">
+    <a class="nav-logo" onclick="navigateTo('home')">ADAMA <span>Canada</span></a>
+    <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a onclick="navigateTo('home')" data-page="home" class="active" data-fr="Accueil" data-en="Home">Accueil</a></li>
+      <li><a onclick="navigateTo('mission')" data-page="mission" data-fr="Mission" data-en="Mission">Mission</a></li>
+      <li><a onclick="navigateTo('programs')" data-page="programs" data-fr="Programmes" data-en="Programs">Programmes</a></li>
+      <li><a onclick="navigateTo('training')" data-page="training" data-fr="Formation" data-en="Training">Formation</a></li>
+      <li><a onclick="navigateTo('contact')" data-page="contact" data-fr="Contact" data-en="Contact">Contact</a></li>
+      <li class="nav-lang">
+        <a onclick="setLang('fr')" id="lang-fr" class="active">FR</a>
+        <a onclick="setLang('en')" id="lang-en">EN</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ======================== HOME ======================== -->
+  <div class="page active" id="page-home">
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hero-badge" data-fr="Arts Martiaux Adaptés" data-en="Adapted Martial Arts">Arts Martiaux Adaptés</div>
+        <h1 data-fr="L'inclusion par<br>la <span class='accent'>discipline</span>" data-en="Inclusion through<br><span class='accent'>discipline</span>">L'inclusion par<br>la <span class="accent">discipline</span></h1>
+        <p data-fr="ADAMA développe et transmet une méthode pédagogique d'enseignement des arts martiaux adaptée aux personnes ayant des besoins spécifiques." data-en="ADAMA develops and delivers an educational method for teaching martial arts adapted to individuals with special needs.">ADAMA développe et transmet une méthode pédagogique d'enseignement des arts martiaux adaptée aux personnes ayant des besoins spécifiques.</p>
+        <div class="hero-buttons">
+          <a onclick="navigateTo('programs')" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            <span data-fr="Nos programmes" data-en="Our programs">Nos programmes</span>
+          </a>
+          <a onclick="navigateTo('mission')" class="btn btn-outline" data-fr="Découvrir ADAMA" data-en="Discover ADAMA">Découvrir ADAMA</a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header reveal">
+        <span class="section-tag" data-fr="Pourquoi ADAMA" data-en="Why ADAMA">Pourquoi ADAMA</span>
+        <h2 data-fr="Les bienfaits des arts martiaux adaptés" data-en="Benefits of adapted martial arts">Les bienfaits des arts martiaux adaptés</h2>
+        <p data-fr="Une approche structurée qui transforme la vie des pratiquants" data-en="A structured approach that transforms practitioners' lives">Une approche structurée qui transforme la vie des pratiquants</p>
+      </div>
+      <div class="grid-3">
+        <div class="glass-card reveal">
+          <div class="icon-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <h3 data-fr="Condition physique" data-en="Physical fitness">Condition physique</h3>
+          <p data-fr="Renforcement de l'endurance, de la coordination et de la force musculaire à travers des exercices adaptés." data-en="Building endurance, coordination, and muscular strength through adapted exercises.">Renforcement de l'endurance, de la coordination et de la force musculaire à travers des exercices adaptés.</p>
+        </div>
+        <div class="glass-card reveal">
+          <div class="icon-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          </div>
+          <h3 data-fr="Confiance en soi" data-en="Self-confidence">Confiance en soi</h3>
+          <p data-fr="Développement de l'estime de soi et de la résilience par la maîtrise progressive de nouvelles compétences." data-en="Developing self-esteem and resilience through progressive mastery of new skills.">Développement de l'estime de soi et de la résilience par la maîtrise progressive de nouvelles compétences.</p>
+        </div>
+        <div class="glass-card reveal">
+          <div class="icon-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3 data-fr="Intégration sociale" data-en="Social integration">Intégration sociale</h3>
+          <p data-fr="Favoriser l'inclusion et les interactions sociales dans un environnement sécuritaire et bienveillant." data-en="Fostering inclusion and social interactions in a safe and welcoming environment.">Favoriser l'inclusion et les interactions sociales dans un environnement sécuritaire et bienveillant.</p>
+        </div>
+      </div>
+      <div class="stats-row reveal">
+        <div class="stat-item">
+          <div class="stat-number" data-count="500" data-suffix="+">0</div>
+          <div class="stat-label" data-fr="Participants" data-en="Participants">Participants</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-count="15" data-suffix="+">0</div>
+          <div class="stat-label" data-fr="Années d'expérience" data-en="Years of experience">Années d'expérience</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-count="50" data-suffix="+">0</div>
+          <div class="stat-label" data-fr="Instructeurs formés" data-en="Trained instructors">Instructeurs formés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-count="10" data-suffix="+">0</div>
+          <div class="stat-label" data-fr="Partenaires" data-en="Partners">Partenaires</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header reveal">
+        <span class="section-tag" data-fr="Nos partenaires" data-en="Our partners">Nos partenaires</span>
+        <h2 data-fr="Ils nous font confiance" data-en="They trust us">Ils nous font confiance</h2>
+      </div>
+      <div class="partners-grid reveal">
+        <div class="partner-logo">Judo Québec</div>
+        <div class="partner-logo" data-fr="Fédération Québécoise de l'Autisme" data-en="Fédération Québécoise de l'Autisme">Fédération Québécoise de l'Autisme</div>
+        <div class="partner-logo">FQJJB</div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="cta-box reveal">
+        <h2 data-fr="Rejoignez le mouvement" data-en="Join the movement">Rejoignez le mouvement</h2>
+        <p data-fr="Ensemble, rendons les arts martiaux accessibles à tous." data-en="Together, let's make martial arts accessible to everyone.">Ensemble, rendons les arts martiaux accessibles à tous.</p>
+        <div class="hero-buttons">
+          <a onclick="navigateTo('contact')" class="btn btn-primary" data-fr="Nous contacter" data-en="Contact us">Nous contacter</a>
+          <a onclick="navigateTo('training')" class="btn btn-outline" data-fr="Devenir instructeur" data-en="Become an instructor">Devenir instructeur</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ======================== MISSION ======================== -->
+  <div class="page" id="page-mission">
+    <section class="hero hero-short">
+      <div class="hero-content">
+        <div class="hero-badge" data-fr="Notre Mission" data-en="Our Mission">Notre Mission</div>
+        <h1 data-fr="L'art martial comme<br>outil d'<span class='accent'>inclusion</span>" data-en="Martial arts as a tool<br>for <span class='accent'>inclusion</span>">L'art martial comme<br>outil d'<span class="accent">inclusion</span></h1>
+        <p data-fr="ADAMA favorise l'intégration des jeunes autistes dans des activités récréatives et sportives d'arts martiaux adaptés." data-en="ADAMA promotes the integration of young people with autism into adapted martial arts recreational and sporting activities.">ADAMA favorise l'intégration des jeunes autistes dans des activités récréatives et sportives d'arts martiaux adaptés.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="grid-2" style="align-items: center; gap: 4rem;">
+        <div class="reveal">
+          <span class="section-tag" data-fr="Notre histoire" data-en="Our story">Notre histoire</span>
+          <h2 style="font-family: var(--font-display); font-size: 2.5rem; text-transform: uppercase; letter-spacing: 1px; margin: 1rem 0;" data-fr="Plus de 15 ans d'engagement" data-en="Over 15 years of commitment">Plus de 15 ans d'engagement</h2>
+          <p style="color: var(--text-secondary); margin-bottom: 1.5rem;" data-fr="ADAMA est née de la conviction que les arts martiaux peuvent transformer la vie des personnes ayant des besoins spécifiques. Notre approche unique combine la rigueur des arts martiaux traditionnels avec une pédagogie adaptée." data-en="ADAMA was born from the belief that martial arts can transform the lives of people with special needs. Our unique approach combines the rigor of traditional martial arts with adapted teaching methods.">ADAMA est née de la conviction que les arts martiaux peuvent transformer la vie des personnes ayant des besoins spécifiques. Notre approche unique combine la rigueur des arts martiaux traditionnels avec une pédagogie adaptée.</p>
+          <p style="color: var(--text-secondary);" data-fr="Nous développons et transmettons une méthode d'enseignement claire et structurée permettant aux instructeurs, éducateurs et parents de vivre des réussites avec cette clientèle." data-en="We develop and deliver a clear, structured teaching method that enables instructors, educators, and parents to achieve success with this clientele.">Nous développons et transmettons une méthode d'enseignement claire et structurée permettant aux instructeurs, éducateurs et parents de vivre des réussites avec cette clientèle.</p>
+        </div>
+        <div class="reveal">
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-year" data-fr="Fondation" data-en="Foundation">Fondation</div>
+              <h3 data-fr="Création d'ADAMA" data-en="ADAMA is created">Création d'ADAMA</h3>
+              <p data-fr="Lancement de l'association à Montréal avec une vision d'inclusion par les arts martiaux." data-en="Launch of the association in Montreal with a vision of inclusion through martial arts.">Lancement de l'association à Montréal avec une vision d'inclusion par les arts martiaux.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year" data-fr="Croissance" data-en="Growth">Croissance</div>
+              <h3 data-fr="Programmes KaraTED & BJJTED" data-en="KaraTED & BJJTED programs">Programmes KaraTED & BJJTED</h3>
+              <p data-fr="Développement de programmes spécialisés de karaté et jiu-jitsu brésilien adaptés." data-en="Development of specialized adapted karate and Brazilian jiu-jitsu programs.">Développement de programmes spécialisés de karaté et jiu-jitsu brésilien adaptés.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year" data-fr="Partenariats" data-en="Partnerships">Partenariats</div>
+              <h3>Judo Québec</h3>
+              <p data-fr="Partenariat avec Judo Québec pour le développement du judo adapté à travers la province." data-en="Partnership with Judo Québec for the development of adapted judo across the province.">Partenariat avec Judo Québec pour le développement du judo adapté à travers la province.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year" data-fr="Aujourd'hui" data-en="Today">Aujourd'hui</div>
+              <h3 data-fr="Rayonnement national" data-en="National reach">Rayonnement national</h3>
+              <p data-fr="Participation aux championnats canadiens et formation d'instructeurs à travers le pays." data-en="Participation in Canadian championships and training instructors across the country.">Participation aux championnats canadiens et formation d'instructeurs à travers le pays.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header reveal">
+        <span class="section-tag" data-fr="Nos valeurs" data-en="Our values">Nos valeurs</span>
+        <h2 data-fr="Ce qui nous guide" data-en="What guides us">Ce qui nous guide</h2>
+      </div>
+      <div class="values-grid reveal">
+        <div class="value-item">
+          <div class="value-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div><h4>Inclusion</h4><p data-fr="Rendre les arts martiaux accessibles à tous, sans exception." data-en="Making martial arts accessible to everyone, without exception.">Rendre les arts martiaux accessibles à tous, sans exception.</p></div>
+        </div>
+        <div class="value-item">
+          <div class="value-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div><h4>Respect</h4><p data-fr="Honorer les valeurs fondamentales des arts martiaux : discipline, respect et persévérance." data-en="Honoring the core values of martial arts: discipline, respect, and perseverance.">Honorer les valeurs fondamentales des arts martiaux : discipline, respect et persévérance.</p></div>
+        </div>
+        <div class="value-item">
+          <div class="value-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div><h4>Adaptation</h4><p data-fr="Ajuster nos méthodes aux besoins uniques de chaque pratiquant." data-en="Adjusting our methods to the unique needs of each practitioner.">Ajuster nos méthodes aux besoins uniques de chaque pratiquant.</p></div>
+        </div>
+        <div class="value-item">
+          <div class="value-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <div><h4>Excellence</h4><p data-fr="Viser les plus hauts standards dans notre enseignement et nos programmes." data-en="Striving for the highest standards in our teaching and programs.">Viser les plus hauts standards dans notre enseignement et nos programmes.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header reveal">
+        <span class="section-tag" data-fr="Notre équipe" data-en="Our team">Notre équipe</span>
+        <h2 data-fr="Les personnes derrière ADAMA" data-en="The people behind ADAMA">Les personnes derrière ADAMA</h2>
+      </div>
+      <div class="grid-3 reveal">
+        <div class="glass-card team-card">
+          <div class="team-avatar"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <h3 data-fr="Direction" data-en="Leadership">Direction</h3>
+          <div class="team-role" data-fr="Président" data-en="President">Président</div>
+        </div>
+        <div class="glass-card team-card">
+          <div class="team-avatar"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <h3>Louise Provencher</h3>
+          <div class="team-role" data-fr="Vice-présidente" data-en="Vice-President">Vice-présidente</div>
+        </div>
+        <div class="glass-card team-card">
+          <div class="team-avatar"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <h3>Yann Sébastian Sanon</h3>
+          <div class="team-role" data-fr="Trésorier" data-en="Treasurer">Trésorier</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="cta-box reveal">
+        <h2 data-fr="Faites partie de l'aventure" data-en="Be part of the journey">Faites partie de l'aventure</h2>
+        <p data-fr="Rejoignez notre mission d'inclusion et d'accessibilité." data-en="Join our mission for inclusion and accessibility.">Rejoignez notre mission d'inclusion et d'accessibilité.</p>
+        <a onclick="navigateTo('contact')" class="btn btn-primary" data-fr="Nous contacter" data-en="Contact us">Nous contacter</a>
+      </div>
+    </section>
+  </div>
+
+  <!-- ======================== PROGRAMS ======================== -->
+  <div class="page" id="page-programs">
+    <section class="hero hero-short">
+      <div class="hero-content">
+        <div class="hero-badge" data-fr="Nos Programmes" data-en="Our Programs">Nos Programmes</div>
+        <h1 data-fr="Des arts martiaux<br>pour <span class='accent'>tous</span>" data-en="Martial arts<br>for <span class='accent'>everyone</span>">Des arts martiaux<br>pour <span class="accent">tous</span></h1>
+        <p data-fr="Des programmes spécialement conçus pour les personnes avec un trouble du spectre de l'autisme ou des limitations physiques." data-en="Programs specially designed for individuals with autism spectrum disorder or physical limitations.">Des programmes spécialement conçus pour les personnes avec un trouble du spectre de l'autisme ou des limitations physiques.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="grid-2" style="gap: 3rem;">
+        <div class="glass-card reveal">
+          <div class="program-image">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="program-tag" data-fr="Programme phare" data-en="Flagship program">Programme phare</div>
+          <h3>KaraTED</h3>
+          <p data-fr="Programme de karaté adapté spécifiquement développé pour les personnes avec un trouble du spectre de l'autisme. Une approche structurée et visuelle qui favorise l'apprentissage des techniques de base." data-en="An adapted karate program specifically developed for individuals with autism spectrum disorder. A structured, visual approach that promotes learning basic techniques.">Programme de karaté adapté spécifiquement développé pour les personnes avec un trouble du spectre de l'autisme. Une approche structurée et visuelle qui favorise l'apprentissage des techniques de base.</p>
+          <ul class="feature-list">
+            <li data-fr="Techniques de karaté adaptées" data-en="Adapted karate techniques">Techniques de karaté adaptées</li>
+            <li data-fr="Approche visuelle et structurée" data-en="Visual and structured approach">Approche visuelle et structurée</li>
+            <li data-fr="Groupes à ratio réduit" data-en="Small group ratios">Groupes à ratio réduit</li>
+            <li data-fr="Bourses disponibles pour familles à faible revenu" data-en="Scholarships for low-income families">Bourses disponibles pour familles à faible revenu</li>
+          </ul>
+        </div>
+        <div class="glass-card reveal">
+          <div class="program-image" style="background: linear-gradient(135deg, #1C1917, #44403C);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="program-tag" data-fr="Jiu-Jitsu adapté" data-en="Adapted Jiu-Jitsu">Jiu-Jitsu adapté</div>
+          <h3>BJJTED</h3>
+          <p data-fr="Programme de jiu-jitsu brésilien adapté qui met l'accent sur le travail au sol, la proprioception et la gestion du contact physique." data-en="An adapted Brazilian jiu-jitsu program focused on ground work, proprioception, and physical contact management.">Programme de jiu-jitsu brésilien adapté qui met l'accent sur le travail au sol, la proprioception et la gestion du contact physique.</p>
+          <ul class="feature-list">
+            <li data-fr="Jiu-jitsu brésilien adapté" data-en="Adapted Brazilian jiu-jitsu">Jiu-jitsu brésilien adapté</li>
+            <li data-fr="Développement de la proprioception" data-en="Proprioception development">Développement de la proprioception</li>
+            <li data-fr="Gestion du contact physique" data-en="Physical contact management">Gestion du contact physique</li>
+            <li data-fr="Encadrement spécialisé" data-en="Specialized supervision">Encadrement spécialisé</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header reveal">
+        <span class="section-tag" data-fr="Judo adapté" data-en="Adapted Judo">Judo adapté</span>
+        <h2 data-fr="Partenariat avec Judo Québec" data-en="Partnership with Judo Québec">Partenariat avec Judo Québec</h2>
+        <p data-fr="ADAMA collabore avec Judo Québec pour rendre le judo accessible aux personnes ayant des besoins spécifiques." data-en="ADAMA collaborates with Judo Québec to make judo accessible to people with special needs.">ADAMA collabore avec Judo Québec pour rendre le judo accessible aux personnes ayant des besoins spécifiques.</p>
+      </div>
+      <div class="grid-3 reveal">
+        <div class="glass-card">
+          <div class="icon-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+          <h3 data-fr="Formation des clubs" data-en="Club training">Formation des clubs</h3>
+          <p data-fr="Accompagnement des clubs de judo pour intégrer des pratiquants avec des besoins spécifiques." data-en="Supporting judo clubs in integrating practitioners with special needs.">Accompagnement des clubs de judo pour intégrer des pratiquants avec des besoins spécifiques.</p>
+        </div>
+        <div class="glass-card">
+          <div class="icon-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <h3 data-fr="Sessions régulières" data-en="Regular sessions">Sessions régulières</h3>
+          <p data-fr="Des cours hebdomadaires dans plusieurs centres à travers le Québec." data-en="Weekly classes at multiple centers across Québec.">Des cours hebdomadaires dans plusieurs centres à travers le Québec.</p>
+        </div>
+        <div class="glass-card">
+          <div class="icon-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <h3 data-fr="Compétitions adaptées" data-en="Adapted competitions">Compétitions adaptées</h3>
+          <p data-fr="Participation aux championnats canadiens avec des catégories adaptées." data-en="Participation in Canadian championships with adapted categories.">Participation aux championnats canadiens avec des catégories adaptées.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="cta-box reveal">
+        <div class="icon-circle" style="margin: 0 auto 1.5rem;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <h2 data-fr="Aidez-nous à faire la différence" data-en="Help us make a difference">Aidez-nous à faire la différence</h2>
+        <p data-fr="Chaque contribution permet à un jeune de découvrir les bienfaits des arts martiaux adaptés." data-en="Every contribution allows a young person to discover the benefits of adapted martial arts.">Chaque contribution permet à un jeune de découvrir les bienfaits des arts martiaux adaptés.</p>
+        <a onclick="navigateTo('contact')" class="btn btn-primary" data-fr="Faire un don" data-en="Donate">Faire un don</a>
+      </div>
+    </section>
+  </div>
+
+  <!-- ======================== TRAINING ======================== -->
+  <div class="page" id="page-training">
+    <section class="hero hero-short">
+      <div class="hero-content">
+        <div class="hero-badge">Formation</div>
+        <h1 data-fr="Devenez instructeur<br><span class='accent'>certifié</span>" data-en="Become a <span class='accent'>certified</span><br>instructor">Devenez instructeur<br><span class="accent">certifié</span></h1>
+        <p data-fr="Formation en techniques d'enseignement des arts martiaux adaptés aux personnes avec un TSA ou des limitations physiques." data-en="Training in adapted martial arts teaching techniques for individuals with ASD or physical limitations.">Formation en techniques d'enseignement des arts martiaux adaptés aux personnes avec un TSA ou des limitations physiques.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header reveal">
+        <span class="section-tag" data-fr="Pour qui" data-en="Who it's for">Pour qui</span>
+        <h2 data-fr="À qui s'adresse la formation" data-en="Who is this training for">À qui s'adresse la formation</h2>
+      </div>
+      <div class="grid-4 reveal">
+        <div class="glass-card" style="text-align: center;">
+          <div class="icon-circle" style="margin: 0 auto 1.5rem;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <h3 data-fr="Instructeurs" data-en="Instructors">Instructeurs</h3>
+          <p data-fr="Instructeurs d'arts martiaux souhaitant adapter leur enseignement." data-en="Martial arts instructors looking to adapt their teaching.">Instructeurs d'arts martiaux souhaitant adapter leur enseignement.</p>
+        </div>
+        <div class="glass-card" style="text-align: center;">
+          <div class="icon-circle" style="margin: 0 auto 1.5rem;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <h3 data-fr="Accompagnateurs" data-en="Companions">Accompagnateurs</h3>
+          <p data-fr="Accompagnateurs et éducateurs spécialisés." data-en="Companions and specialized educators.">Accompagnateurs et éducateurs spécialisés.</p>
+        </div>
+        <div class="glass-card" style="text-align: center;">
+          <div class="icon-circle" style="margin: 0 auto 1.5rem;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <h3>Parents</h3>
+          <p data-fr="Parents souhaitant accompagner leurs enfants." data-en="Parents who want to support their children.">Parents souhaitant accompagner leurs enfants.</p>
+        </div>
+        <div class="glass-card" style="text-align: center;">
+          <div class="icon-circle" style="margin: 0 auto 1.5rem;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+          <h3 data-fr="Professionnels" data-en="Professionals">Professionnels</h3>
+          <p data-fr="Professionnels de la santé et intervenants." data-en="Healthcare professionals and workers.">Professionnels de la santé et intervenants.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header reveal">
+        <span class="section-tag" data-fr="Contenu" data-en="Curriculum">Contenu</span>
+        <h2 data-fr="Ce que vous apprendrez" data-en="What you'll learn">Ce que vous apprendrez</h2>
+      </div>
+      <div class="grid-3 reveal">
+        <div class="glass-card">
+          <h3 data-fr="Compréhension du TSA" data-en="Understanding ASD">Compréhension du TSA</h3>
+          <p data-fr="Compréhension approfondie du trouble du spectre de l'autisme et de ses impacts sur l'apprentissage moteur." data-en="Gain a deep understanding of autism spectrum disorder and its impact on motor learning.">Compréhension approfondie du trouble du spectre de l'autisme et de ses impacts sur l'apprentissage moteur.</p>
+        </div>
+        <div class="glass-card">
+          <h3 data-fr="Méthodes pédagogiques" data-en="Teaching methods">Méthodes pédagogiques</h3>
+          <p data-fr="Outils pédagogiques clairs et structurés pour un enseignement efficace et inclusif." data-en="Clear, structured teaching tools for effective and inclusive instruction.">Outils pédagogiques clairs et structurés pour un enseignement efficace et inclusif.</p>
+        </div>
+        <div class="glass-card">
+          <h3 data-fr="Techniques adaptées" data-en="Adapted techniques">Techniques adaptées</h3>
+          <p data-fr="Adapter les techniques d'arts martiaux aux capacités de chaque pratiquant." data-en="Learn to adapt martial arts techniques to each practitioner's abilities.">Adapter les techniques d'arts martiaux aux capacités de chaque pratiquant.</p>
+        </div>
+        <div class="glass-card">
+          <h3 data-fr="Gestion de groupe" data-en="Group management">Gestion de groupe</h3>
+          <p data-fr="Stratégies pour gérer un groupe mixte de pratiquants neurotypiques et neuroatypiques." data-en="Strategies for managing mixed groups of neurotypical and neuroatypical practitioners.">Stratégies pour gérer un groupe mixte de pratiquants neurotypiques et neuroatypiques.</p>
+        </div>
+        <div class="glass-card">
+          <h3>Communication</h3>
+          <p data-fr="Techniques de communication visuelle, verbale et gestuelle adaptées." data-en="Visual, verbal, and gestural communication techniques.">Techniques de communication visuelle, verbale et gestuelle adaptées.</p>
+        </div>
+        <div class="glass-card">
+          <h3 data-fr="Évaluation" data-en="Assessment">Évaluation</h3>
+          <p data-fr="Outils d'évaluation et de suivi des progrès adaptés." data-en="Assessment and progress tracking tools.">Outils d'évaluation et de suivi des progrès adaptés.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="cta-box reveal">
+        <h2 data-fr="Prêt à vous former?" data-en="Ready to get trained?">Prêt à vous former?</h2>
+        <p data-fr="Contactez-nous pour connaître les prochaines sessions." data-en="Contact us to learn about upcoming sessions.">Contactez-nous pour connaître les prochaines sessions.</p>
+        <a onclick="navigateTo('contact')" class="btn btn-primary" data-fr="S'inscrire à la formation" data-en="Register for training">S'inscrire à la formation</a>
+      </div>
+    </section>
+  </div>
+
+  <!-- ======================== CONTACT ======================== -->
+  <div class="page" id="page-contact">
+    <section class="hero hero-xs">
+      <div class="hero-content">
+        <div class="hero-badge">Contact</div>
+        <h1 data-fr="Parlons <span class='accent'>ensemble</span>" data-en="Let's <span class='accent'>talk</span>">Parlons <span class="accent">ensemble</span></h1>
+        <p data-fr="Vous avez des questions sur nos programmes ou souhaitez vous impliquer? Contactez-nous." data-en="Have questions about our programs or want to get involved? Reach out to us.">Vous avez des questions sur nos programmes ou souhaitez vous impliquer? Contactez-nous.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="contact-grid">
+        <div class="reveal">
+          <div class="contact-info-item">
+            <div class="icon-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div>
+              <h3 data-fr="Courriel" data-en="Email">Courriel</h3>
+              <p><a href="mailto:info@adamacanada.org" style="color: var(--accent); text-decoration: none;">info@adamacanada.org</a></p>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="icon-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+            <div>
+              <h3 data-fr="Téléphone" data-en="Phone">Téléphone</h3>
+              <p><a href="tel:5148174614" style="color: var(--text-secondary); text-decoration: none;">514-817-4614</a></p>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="icon-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <div>
+              <h3 data-fr="Adresse" data-en="Address">Adresse</h3>
+              <p>Montréal, QC, Canada</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card reveal">
+          <h3 style="margin-bottom: 1.5rem;" data-fr="Envoyez-nous un message" data-en="Send us a message">Envoyez-nous un message</h3>
+          <form onsubmit="event.preventDefault(); alert(currentLang === 'fr' ? 'Message envoyé! Merci.' : 'Message sent! Thank you.');">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name" data-fr="Nom complet" data-en="Full name">Nom complet</label>
+                <input type="text" id="name" name="name" required>
+              </div>
+              <div class="form-group">
+                <label for="email" data-fr="Courriel" data-en="Email">Courriel</label>
+                <input type="email" id="email" name="email" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="subject" data-fr="Sujet" data-en="Subject">Sujet</label>
+              <select id="subject" name="subject">
+                <option value="" data-fr="Sélectionnez un sujet" data-en="Select a subject">Sélectionnez un sujet</option>
+                <option value="programmes" data-fr="Programmes (KaraTED / BJJTED)" data-en="Programs (KaraTED / BJJTED)">Programmes (KaraTED / BJJTED)</option>
+                <option value="formation" data-fr="Formation instructeur" data-en="Instructor training">Formation instructeur</option>
+                <option value="partenariat" data-fr="Partenariat" data-en="Partnership">Partenariat</option>
+                <option value="don" data-fr="Faire un don" data-en="Make a donation">Faire un don</option>
+                <option value="autre" data-fr="Autre" data-en="Other">Autre</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+              <span data-fr="Envoyer le message" data-en="Send message">Envoyer le message</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER (shared) -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <a class="nav-logo" onclick="navigateTo('home')" style="cursor:pointer;">ADAMA <span>Canada</span></a>
+        <p data-fr="Association de développement des arts martiaux adaptés. Promouvoir l'inclusion par la discipline." data-en="Adapted Martial Arts Development Association. Promoting inclusion through discipline.">Association de développement des arts martiaux adaptés. Promouvoir l'inclusion par la discipline.</p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <ul class="footer-links">
+          <li><a onclick="navigateTo('home')" data-fr="Accueil" data-en="Home">Accueil</a></li>
+          <li><a onclick="navigateTo('mission')">Mission</a></li>
+          <li><a onclick="navigateTo('programs')" data-fr="Programmes" data-en="Programs">Programmes</a></li>
+          <li><a onclick="navigateTo('training')" data-fr="Formation" data-en="Training">Formation</a></li>
+          <li><a onclick="navigateTo('contact')">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul class="footer-links">
+          <li><a href="mailto:info@adamacanada.org">info@adamacanada.org</a></li>
+          <li><a href="tel:5148174614">514-817-4614</a></li>
+          <li>Montréal, QC, Canada</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span data-fr="&copy; 2024 ADAMA Canada. Tous droits réservés." data-en="&copy; 2024 ADAMA Canada. All rights reserved.">&copy; 2024 ADAMA Canada. Tous droits réservés.</span>
+      <div class="nav-lang">
+        <a onclick="setLang('fr')" class="active" id="lang-fr-footer">FR</a>
+        <a onclick="setLang('en')" id="lang-en-footer">EN</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================== SCRIPTS ======================== -->
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+  <script type="module">
+    import * as THREE from 'three';
+
+    const canvas = document.getElementById('bg-canvas');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion) { canvas.style.display = 'none'; }
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 1000);
+    camera.position.z = 30;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+    const N = 200;
+    const pos = new Float32Array(N * 3);
+    const vel = [];
+    for (let i = 0; i < N; i++) {
+      pos[i*3] = (Math.random()-.5)*60;
+      pos[i*3+1] = (Math.random()-.5)*60;
+      pos[i*3+2] = (Math.random()-.5)*40;
+      vel.push({ x:(Math.random()-.5)*.01, y:(Math.random()-.5)*.01, z:(Math.random()-.5)*.005 });
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const mat = new THREE.PointsMaterial({ color:0xDC2626, size:0.15, transparent:true, opacity:0.6, blending:THREE.AdditiveBlending, sizeAttenuation:true });
+    const pts = new THREE.Points(geo, mat);
+    scene.add(pts);
+
+    const tk = new THREE.Mesh(
+      new THREE.TorusKnotGeometry(8, 2.5, 100, 16),
+      new THREE.MeshBasicMaterial({ color:0x1E293B, wireframe:true, transparent:true, opacity:0.12 })
+    );
+    tk.position.set(15, -5, -10);
+    scene.add(tk);
+
+    const ic1 = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(4, 1),
+      new THREE.MeshBasicMaterial({ color:0xDC2626, wireframe:true, transparent:true, opacity:0.08 })
+    );
+    ic1.position.set(-18, 8, -5);
+    scene.add(ic1);
+
+    const ic2 = new THREE.Mesh(
+      new THREE.OctahedronGeometry(3, 0),
+      new THREE.MeshBasicMaterial({ color:0x334155, wireframe:true, transparent:true, opacity:0.1 })
+    );
+    ic2.position.set(-10, -12, -8);
+    scene.add(ic2);
+
+    let mx = 0, my = 0;
+    document.addEventListener('mousemove', e => { mx = (e.clientX/innerWidth-.5)*2; my = (e.clientY/innerHeight-.5)*2; });
+
+    let sy = 0;
+    addEventListener('scroll', () => { sy = scrollY; });
+
+    function animate() {
+      if (reducedMotion) return;
+      requestAnimationFrame(animate);
+      const p = geo.attributes.position.array;
+      for (let i=0;i<N;i++){
+        p[i*3]+=vel[i].x; p[i*3+1]+=vel[i].y; p[i*3+2]+=vel[i].z;
+        if(Math.abs(p[i*3])>30)vel[i].x*=-1;
+        if(Math.abs(p[i*3+1])>30)vel[i].y*=-1;
+        if(Math.abs(p[i*3+2])>20)vel[i].z*=-1;
+      }
+      geo.attributes.position.needsUpdate=true;
+      tk.rotation.x+=.002; tk.rotation.y+=.003;
+      ic1.rotation.x+=.003; ic1.rotation.z+=.002;
+      ic2.rotation.y+=.004; ic2.rotation.z+=.001;
+      camera.position.x+=(mx*2-camera.position.x)*.02;
+      camera.position.y+=(-my*2-camera.position.y)*.02;
+      const sf=sy*.001;
+      pts.rotation.y=sf*.3;
+      tk.position.y=-5+sf*2;
+      camera.lookAt(scene.position);
+      renderer.render(scene, camera);
+    }
+    animate();
+    addEventListener('resize', () => { camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+  </script>
+
+  <script>
+    let currentLang = 'fr';
+    let currentPage = 'home';
+
+    function navigateTo(page) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + page).classList.add('active');
+
+      document.querySelectorAll('.nav-links a[data-page]').forEach(a => {
+        a.classList.toggle('active', a.dataset.page === page);
+      });
+
+      currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      const links = document.querySelector('.nav-links');
+      if (links.classList.contains('open')) links.classList.remove('open');
+
+      setTimeout(initReveals, 100);
+    }
+
+    function setLang(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+
+      document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+        const val = el.getAttribute('data-' + lang);
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.placeholder = val;
+        } else if (el.tagName === 'OPTION') {
+          el.textContent = val;
+        } else {
+          el.innerHTML = val;
+        }
+      });
+
+      document.getElementById('lang-fr').classList.toggle('active', lang === 'fr');
+      document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+      document.getElementById('lang-fr-footer').classList.toggle('active', lang === 'fr');
+      document.getElementById('lang-en-footer').classList.toggle('active', lang === 'en');
+    }
+
+    function initReveals() {
+      const reveals = document.querySelectorAll('.reveal:not(.visible)');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+      reveals.forEach(el => observer.observe(el));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggle = document.querySelector('.nav-toggle');
+      const links = document.querySelector('.nav-links');
+      toggle.addEventListener('click', () => {
+        links.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', links.classList.contains('open'));
+      });
+
+      window.addEventListener('scroll', () => {
+        document.querySelector('.nav').classList.toggle('scrolled', scrollY > 50);
+      });
+
+      initReveals();
+
+      document.querySelectorAll('.stat-number[data-count]').forEach(el => {
+        const target = parseInt(el.dataset.count);
+        const suffix = el.dataset.suffix || '';
+        const countObserver = new IntersectionObserver(entries => {
+          if (entries[0].isIntersecting) {
+            let current = 0;
+            const step = Math.max(1, Math.floor(target / 60));
+            const interval = setInterval(() => {
+              current += step;
+              if (current >= target) { current = target; clearInterval(interval); }
+              el.textContent = current + suffix;
+            }, 20);
+            countObserver.unobserve(el);
+          }
+        }, { threshold: 0.5 });
+        countObserver.observe(el);
+      });
+    });
+  </script>
+</body>
+</html>
